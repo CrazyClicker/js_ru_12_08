@@ -14,6 +14,7 @@ export default class Article extends Component {
    */
   state = {
     isOpen: false,
+    //Лучше эту логику в CommentList вынести
     commentsVisibility: false
   }
 
@@ -25,6 +26,7 @@ export default class Article extends Component {
         <section>{article.text}
           <div>
               <h4 onClick={this.showComments}>
+                {/*Лучше код в JSX не писать - плохо читается; Вынеси в переменную и вставь ее тут*/}
                 {(() => {
                   if (!article.comments) {
                     return 'No comments'
