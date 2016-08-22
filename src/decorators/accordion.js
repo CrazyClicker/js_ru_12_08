@@ -2,6 +2,8 @@
 //decorator
 import React from 'react'
 
+//Декораторы создают для переиспользования кода. Их следует делать максимеально универсальными, 
+//не привязывайся к названиям сущностей типа Article. Лучше называй toggleOpenItem, например
 export default (Component) => {
     return class AccordionDecorator extends React.Component {
         state = {
