@@ -1,8 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import CommentList from './CommentList'
-import toggleOpen from '../decorators/toggleOpen'
 
-class Article extends Component {
+export default class Article extends Component {
 /*
 
     constructor() {
@@ -28,5 +27,3 @@ class Article extends Component {
         )
     }
 }
-
-export default Article

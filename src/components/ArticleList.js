@@ -1,17 +1,16 @@
 import React, { Component } from 'react'
 import Article from './Article'
+import accordion from '../decorators/accordion'
 
-export default class ArticleList extends Component {
-    state = {
-        openArticleId: null
-    }
+class ArticleList extends Component {
 
     render() {
+
         const articleItems = this.props.articles.map(articleObject =>
             <li key = {articleObject.id}>
                 <Article article = {articleObject}
-                    isOpen = {this.state.openArticleId === articleObject.id}
-                    toggleOpen = {this.toggleOpenArticle(articleObject.id)}
+                    isOpen = {this.props.isOpen(articleObject.id)}
+                    toggleOpen = {this.props.toggleOpen(articleObject.id)} //есть смысл присвоения переменной кроме того что тут не пришлось бы приставку this.props писать?
                 />
             </li>)
         return (
@@ -21,10 +20,6 @@ export default class ArticleList extends Component {
         )
     }
 
-    toggleOpenArticle = id => ev => {
-        if (ev) ev.preventDefault()
-        this.setState({
-            openArticleId: id
-        })
-    }
 }
+
+export default accordion(ArticleList)
