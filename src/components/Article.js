@@ -1,69 +1,32 @@
-import React, {Component} from 'react'
-import CommentsList from './CommentsList'
+import React, { Component, PropTypes } from 'react'
+import CommentList from './CommentList'
+import toggleOpen from '../decorators/toggleOpen'
 
-export default class Article extends Component {
-  /*
+class Article extends Component {
+/*
 
-   constructor() {
-   super()
-   this.state = {
-   isOpen: false
-   }
-   }
+    constructor() {
+        super()
+        this.state = {
+            isOpen: false
+        }
+    }
 
-   */
-  state = {
-    isOpen: false,
-    //Лучше эту логику в CommentList вынести
-    commentsVisibility: false
-  }
+*/
+    static propTypes = {
+        article: PropTypes.object.isRequired
+    }
 
-  render() {
-    const {article} = this.props
-    const comments = article.comments && this.state.commentsVisibility ?
-        <CommentsList comments={article.comments}/> : null
-    const body = this.state.isOpen ?
-        <section>{article.text}
-          <div>
-              <h4 onClick={this.showComments}>
-                {/*Лучше код в JSX не писать - плохо читается; Вынеси в переменную и вставь ее тут*/}
-                {(() => {
-                  if (!article.comments) {
-                    return 'No comments'
-                  }
-
-                  if (this.state.commentsVisibility) {
-                    return 'Hide comments'
-                  } else {
-                    return 'Show comments (' + article.comments.length + ')'
-                  }
-                })()}
-              </h4>
+    render() {
+        const { article: { text, title, comments}, isOpen, toggleOpen } = this.props
+        const body = isOpen ? <section>{text}<CommentList comments = {comments}/></section> : null
+        return (
             <div>
-              {comments}
+                <h3 onClick = {toggleOpen}>{title}</h3>
+                {body}
             </div>
-          </div>
-        </section>
-        : null
-
-    return (
-        <div>
-          <h3 onClick={this.showBody}>{article.title}</h3>
-          {body}
-        </div>
-    )
-  }
-
-  showBody = (ev) => {
-    this.setState({
-      isOpen: !this.state.isOpen
-    })
-  }
-
-  showComments = (ev) => {
-    this.setState({
-      commentsVisibility: !this.state.commentsVisibility
-    })
-  }
-
+        )
+    }
 }
+
+export default Article
