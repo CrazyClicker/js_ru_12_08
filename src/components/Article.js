@@ -13,7 +13,10 @@ export default class Article extends Component {
 
 */
     static propTypes = {
-        article: PropTypes.object.isRequired
+        article: PropTypes.shape({
+            title: PropTypes.string.isRequired,
+            text: PropTypes.string.isRequired,
+        }).isRequired
     }
 
     render() {
