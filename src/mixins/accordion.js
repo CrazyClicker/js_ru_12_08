@@ -1,20 +1,17 @@
 export default {
     getInitialState() {
         return {
-            openArticleId: null
+            openItemId: null
         }
     },
 
-    toggleOpen(id) {
+    toggleOpenItem(id) {
         return ev => {
             if (ev) ev.preventDefault()
             this.setState({
-                openArticleId: this.state.openArticleId == id ? null : id
+                openItemId: this.state.openItemId == id ? null : id
             })
         }
-    },
-
-    isOpen(id) {
-        return this.state.openArticleId == id
     }
+
 }

@@ -4,17 +4,31 @@ import accordion from '../decorators/accordion'
 
 class ArticleList extends Component {
     static propTypes = {
-        //теперь компонент расчитывает на isOpen и toggleOpen - рекомендую их тоже описать
-        articles: PropTypes.arrayOf(PropTypes.object)
+        articles: PropTypes.array.isRequired,
+        //from accordion decorator
+        toggleOpenItem: PropTypes.func.isRequired,
+        isOpenItem: PropTypes.func.isRequired
+    }
+
+    componentWillMount() {
+        console.log('---', 'mounting')
+    }
+
+    componentDidMount() {
+        console.log('---', 'mounted')
+    }
+
+    componentWillReceiveProps(nextProps) {
+        console.log('---', this.props, nextProps)
     }
 
     render() {
-        //мне лично надоедает писать this.props по этому разбиваю на переменные
-        const articleItems = this.props.articles.map(articleObject =>
+        const { articles, toggleOpenItem, isOpenItem } = this.props
+        const articleItems = articles.map(articleObject =>
             <li key = {articleObject.id}>
                 <Article article = {articleObject}
-                    isOpen = {this.props.isOpen(articleObject.id)}
-                    toggleOpen = {this.props.toggleOpen(articleObject.id)} //есть смысл присвоения переменной кроме того что тут не пришлось бы приставку this.props писать?
+                    isOpen = {isOpenItem(articleObject.id)}
+                    toggleOpen = {toggleOpenItem(articleObject.id)}
                 />
             </li>)
         return (
@@ -23,7 +37,6 @@ class ArticleList extends Component {
             </ul>
         )
     }
-
 }
 
 export default accordion(ArticleList)

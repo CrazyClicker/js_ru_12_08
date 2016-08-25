@@ -2,25 +2,23 @@
 //decorator
 import React from 'react'
 
-//Декораторы создают для переиспользования кода. Их следует делать максимеально универсальными, 
-//не привязывайся к названиям сущностей типа Article. Лучше называй toggleOpenItem, например
 export default (Component) => {
     return class AccordionDecorator extends React.Component {
         state = {
-            openArticleId: null
+            openItemId: null
         }
 
-        toggleOpen = id => ev => {
+        toggleOpenItem = id => ev => {
             if (ev) ev.preventDefault()
             this.setState({
-                openArticleId: this.state.openArticleId == id ? null : id
+                openItemId: id == this.state.openItemId ? null : id
             })
         }
 
-        isOpen = id => this.state.openArticleId == id
+        isOpenItem = id => this.state.openItemId === id
 
         render() {
-            return <Component {...this.props}  toggleOpen = {this.toggleOpen} isOpen = {this.isOpen}/>
+            return <Component {...this.props} isOpenItem = {this.isOpenItem} toggleOpenItem = {this.toggleOpenItem} {...this.state}/>
         }
     }
 }
