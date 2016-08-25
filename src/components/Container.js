@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import ArticleList from './ArticleList'
 import Select from 'react-select'
+import DatePicker from './DatePicker'
 import 'react-select/dist/react-select.css'
 import JqueryComponent from './JqueryComponent'
 import { findDOMNode } from 'react-dom'
@@ -11,7 +12,7 @@ class Container extends Component {
     };
 
     state = {
-        selected: null
+        selected: null,
     }
 
     render() {
@@ -21,6 +22,7 @@ class Container extends Component {
         }))
         return (
             <div>
+                <DatePicker />
                 <Select options = {options} value={this.state.selected} onChange = {this.handleChange} multi={true}/>
                 <ArticleList articles = {this.props.articles} />
                 <JqueryComponent items = {this.props.articles} ref={this.getJQ}/>
@@ -33,11 +35,6 @@ class Container extends Component {
         console.log('---', findDOMNode(ref))
     }
 
-    handleChange = (selected) => {
-        this.setState({
-            selected
-        })
-    }
 }
 
 export default Container
