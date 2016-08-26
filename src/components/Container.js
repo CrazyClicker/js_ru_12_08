@@ -55,7 +55,7 @@ class Container extends Component {
         this.jqRef = ref
         console.log('---', findDOMNode(ref))
     }
-
+    //Нет, все хорошо. Не надо ничего делать через ref, разве что по другому никак
     setRange = (e, day) => { //возможно я не понял задачи и надо было через ref делать
         const range = DateUtils.addDayToRange(day, this.state);
         this.setState(range);
