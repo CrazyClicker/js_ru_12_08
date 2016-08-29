@@ -1,13 +1,12 @@
 import React, { Component, PropTypes } from 'react'
 import ArticleList from './ArticleList'
 import Select from 'react-select'
-import DayPicker, { DateUtils } from 'react-day-picker';
-import JqueryComponent from './JqueryComponent'
-import { findDOMNode } from 'react-dom'
-import moment from 'moment';
-
-import 'react-day-picker/lib/style.css';
 import 'react-select/dist/react-select.css'
+import JqueryComponent from './JqueryComponent'
+import DaypickerContainer from './DaypickerContainer'
+import Counter from './Counter'
+import { findDOMNode } from 'react-dom'
+import { connect } from 'react-redux'
 
 class Container extends Component {
     static propTypes = {
@@ -15,9 +14,7 @@ class Container extends Component {
     };
 
     state = {
-        from: null,
-        to: null,
-        selected: null,
+        selected: null
     }
 
     render() {
@@ -25,27 +22,12 @@ class Container extends Component {
             label: article.title,
             value: article.id
         }))
-
-        const {from, to} = this.state
         return (
             <div>
-                <DayPicker
-                    ref="daypicker"
-                    numberOfMonths={ 2 }
-                    selectedDays={ day => DateUtils.isDayInRange(day, { from, to }) }
-                    onDayClick={ this.setRange }
-                />
-                <div>
-                    { !from && !to && <p>Please select the <strong>first day</strong>.</p> }
-                    { from && !to && <p>Please select the <strong>last day</strong>.</p> }
-                    { from && to &&
-                    <p>
-                        You chose from { moment(from).format('L') } to { moment(to).format('L') }
-                    </p>
-                    }
-                </div>
-                <Select options = {options} value={this.state.selected} onChange = {this.handleChange} multi={true}/>
+                <Counter />
                 <ArticleList articles = {this.props.articles} />
+                <Select options = {options} value={this.state.selected} onChange = {this.handleChange} multi={true}/>
+                <DaypickerContainer />
                 <JqueryComponent items = {this.props.articles} ref={this.getJQ}/>
             </div>
         )
@@ -55,12 +37,16 @@ class Container extends Component {
         this.jqRef = ref
         console.log('---', findDOMNode(ref))
     }
-    //Нет, все хорошо. Не надо ничего делать через ref, разве что по другому никак
-    setRange = (e, day) => { //возможно я не понял задачи и надо было через ref делать
-        const range = DateUtils.addDayToRange(day, this.state);
-        this.setState(range);
-    }}
 
+    handleChange = (selected) => {
+        this.setState({
+            selected
+        })
+    }
+}
 
-
-export default Container
+export default connect((state) => {
+    const { articles } = state
+    return { articles }
+}
+)(Container)
