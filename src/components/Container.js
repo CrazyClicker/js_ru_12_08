@@ -5,7 +5,7 @@ import 'react-select/dist/react-select.css'
 import DaypickerContainer from './DaypickerContainer'
 import {findDOMNode} from 'react-dom'
 import {connect} from 'react-redux'
-import {setFilters} from '../AC/filters'
+import {setFilter} from '../AC/filters'
 
 class Container extends Component {
   static propTypes = {};
@@ -19,19 +19,12 @@ class Container extends Component {
     return (
       <div>
         <ArticleList articles={this.props.visibleArticles}/>
-        <Select options={options} value={this.props.filters.selected} onChange={this.setSelected} multi={true}/>
-        <DaypickerContainer setRange={this.setRange}/>
+        <Select options={options} value={this.props.filters.selected} onChange={this.props.setSelected} multi={true}/>
+        <DaypickerContainer setRange={this.props.setRange}/>
       </div>
     )
   }
 
-  setSelected = (selected) => {
-    this.props.setSelected(selected)
-  }
-
-  setRange = (range) => {
-    this.props.setRange(range)
-  }
 }
 
 //ToDo:: обернуть ArticleList компонентой с этой логикой
@@ -71,17 +64,12 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    //Как deleteArticle диспатчится?
     setSelected: (selected) => {
-      dispatch({
-        type: 'SET_FILTER',
-        payload: {selected}
-      })
+      dispatch(setFilter({selected}))
     },
     setRange: (range) => {
-      dispatch({
-        type: 'SET_FILTER',
-        payload: {range}
-      })
+      dispatch(setFilter({range}))
     }
   }
 }
