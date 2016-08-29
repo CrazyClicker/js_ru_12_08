@@ -5,7 +5,7 @@ const filter = (filters = {filters : {}}, action) => {
 
   switch (type) {
     case SET_FILTER:
-      return Object.assign(filters, payload)
+      return Object.assign({}, filters, payload)
     default:
       return filters
   }

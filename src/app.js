@@ -7,6 +7,6 @@ import Container from './components/Container'
 
 render(
     <Provider store = {store}>
-        <Container {...store.getState()} />
+        <Container />
     </Provider>
     , document.getElementById('container'))
