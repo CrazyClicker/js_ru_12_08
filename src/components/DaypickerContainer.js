@@ -38,6 +38,8 @@ class Daypicker extends Component {
     handleDayClick = (e, day) => {
         const range = DateUtils.addDayToRange(day, this.state);
         this.setState(range)
+
+        this.props.setRange(range)
     }
 }
 
