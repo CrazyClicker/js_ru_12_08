@@ -19,10 +19,18 @@ class Container extends Component {
     return (
       <div>
         <ArticleList articles={this.props.visibleArticles}/>
-        <Select options={options} value={this.props.filters.selected} onChange={this.props.setSelected} multi={true}/>
-        <DaypickerContainer setRange={this.props.setRange}/>
+        <Select options={options} value={this.props.filters.selected} onChange={this.setSelected} multi={true}/>
+        <DaypickerContainer setRange={this.setRange}/>
       </div>
     )
+  }
+
+  setRange = (range) => {
+    this.props.setFilter({range})
+  }
+
+  setSelected = (selected) => {
+    this.props.setFilter({selected})
   }
 
 }
@@ -62,19 +70,7 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    //Как deleteArticle диспатчится?
-    setSelected: (selected) => {
-      dispatch(setFilter({selected}))
-    },
-    setRange: (range) => {
-      dispatch(setFilter({range}))
-    }
-  }
-}
-
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  {setFilter}
 )(Container)
