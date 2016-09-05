@@ -1,76 +1,39 @@
 import React, {Component, PropTypes} from 'react'
 import ArticleList from './ArticleList'
-import Select from 'react-select'
-import 'react-select/dist/react-select.css'
-import DaypickerContainer from './DaypickerContainer'
-import {findDOMNode} from 'react-dom'
-import {connect} from 'react-redux'
-import {setFilter} from '../AC/filters'
+import JqueryComponent from './JqueryComponent'
+import Counter from './Counter'
+import { findDOMNode } from 'react-dom'
+import { connect } from 'react-redux'
+import Filters from './Filters'
 
 class Container extends Component {
-  static propTypes = {};
+    render() {
+        return (
+            <div>
+                <Counter />
+                <Filters />
+                <ArticleList articles = {this.props.articles} />
+                <JqueryComponent items = {this.props.articles} ref={this.getJQ}/>
+            </div>
+        )
+    }
 
-  render() {
-    const options = this.props.articles.map(article => ({
-      label: article.title,
-      value: article.id
-    }))
-
-    return (
-      <div>
-        <ArticleList articles={this.props.visibleArticles}/>
-        <Select options={options} value={this.props.filters.selected} onChange={this.setSelected} multi={true}/>
-        <DaypickerContainer setRange={this.setRange}/>
-      </div>
-    )
-  }
-
-  setRange = (range) => {
-    this.props.setFilter({range})
-  }
-
-  setSelected = (selected) => {
-    this.props.setFilter({selected})
-  }
-
+    getJQ = (ref) => {
+        this.jqRef = ref
+//        console.log('---', findDOMNode(ref))
+    }
 }
 
-//ToDo:: обернуть ArticleList компонентой с этой логикой
-const getVisibleArticles = (articles, filters) => {
-  let filteredArticles = articles.slice();
+export default connect((state) => {
+    const { articles, filters } = state
+    const selected = filters.get('selected')
+    const dates = filters.get('dates')
 
-  if (filters.selected) {
-    const filteredKeys = Object.keys(filters.selected).map(filter => filters.selected[filter].value)
-
-    filteredArticles = filteredArticles.filter((article) => {
-      return filteredKeys.includes(article.id)
-    })
-  }
-
-  if (filters.range) {
-    filteredArticles = filteredArticles.filter((article) => {
-      const {from, to} = filters.range
-      const articleDate = new Date(article.date)
-
-      return (!from || articleDate > from) && (!to || articleDate < to)
-    })
-  }
-
-  return filteredArticles;
-}
-
-const mapStateToProps = (state) => {
-  return {
-    visibleArticles: getVisibleArticles(
-      state.articles,
-      state.filters
-    ),
-    articles: state.articles,
-    filters: state.filters
-  }
-}
-
-export default connect(
-  mapStateToProps,
-  {setFilter}
-)(Container)
+    const filteredArticles = articles
+        .filter(article => !selected.length || selected.includes(article.id))
+        .filter(article => {
+            const publisingDate = Date.parse(article.date)
+            return (!dates.from || dates.from < publisingDate) && (!dates.to || dates.to > publisingDate)
+        })
+    return { articles: filteredArticles }
+})(Container)

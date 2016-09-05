@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react'
 import Article from './Article'
 import accordion from '../decorators/accordion'
+import CSSTransition from 'react-addons-css-transition-group'
+import './articleList.css'
 
 class ArticleList extends Component {
     static propTypes = {
@@ -20,9 +22,9 @@ class ArticleList extends Component {
                 />
             </li>)
         return (
-            <ul>
+            <CSSTransition transitionName="article" transitionLeaveTimeout ={1000} transitionEnterTimeout = {500}>
                 {articleItems}
-            </ul>
+            </CSSTransition>
         )
     }
 }

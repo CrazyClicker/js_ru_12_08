@@ -34,7 +34,7 @@ class CommentList extends Component {
 
         if (!isOpen) return <div>{toggleButton}</div>
 
-        const commentItems = comments.map(comment => <li key = {comment.id}><Comment comment = {comment} /></li>)
+        const commentItems = comments.map(commentId => <li key = {commentId}><Comment commentId = {commentId} /></li>)
 
         return (
             <div>

@@ -5,13 +5,9 @@ import 'react-day-picker/lib/style.css'
 
 class Daypicker extends Component {
     static propTypes = {
-
+        changeDates: PropTypes.func.isRequired,
+        dates: PropTypes.object.isRequired
     };
-
-    state = {
-        from: null,
-        to: null
-    }
 
     render() {
         return (
@@ -26,9 +22,9 @@ class Daypicker extends Component {
         )
     }
 
-    handleSelect = day => DateUtils.isDayInRange(day, this.state)
+    handleSelect = day => DateUtils.isDayInRange(day, this.props.dates)
     getRangeTitle() {
-        const { from, to } = this.state
+        const { from, to } = this.props.dates
         const fromText = from && `Start date: ${from.toDateString()}`
         const toText = to && `Finish date: ${to.toDateString()}`
 
@@ -36,10 +32,9 @@ class Daypicker extends Component {
     }
 
     handleDayClick = (e, day) => {
-        const range = DateUtils.addDayToRange(day, this.state);
-        this.setState(range)
-
-        this.props.setRange(range)
+        const { dates, changeDates } = this.props
+        const range = DateUtils.addDayToRange(day, dates);
+        changeDates(range)
     }
 }
 
