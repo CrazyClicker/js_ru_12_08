@@ -11,7 +11,7 @@ class Filters extends Component {
         const options = articles.map(article => ({
             label: article.title,
             value: article.id
-        }))
+        })).toArray()
 
         return (
             <div>

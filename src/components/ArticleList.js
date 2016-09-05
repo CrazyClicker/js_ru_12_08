@@ -6,7 +6,7 @@ import './articleList.css'
 
 class ArticleList extends Component {
     static propTypes = {
-        articles: PropTypes.array.isRequired,
+        articles: PropTypes.object.isRequired,
         //from accordion decorator
         toggleOpenItem: PropTypes.func.isRequired,
         isOpenItem: PropTypes.func.isRequired
@@ -15,10 +15,10 @@ class ArticleList extends Component {
     render() {
         const { articles, toggleOpenItem, isOpenItem } = this.props
         const articleItems = articles.map(articleObject =>
-            <li key = {articleObject.id}>
+            <li key = {articleObject.get('id')}>
                 <Article article = {articleObject}
-                    isOpen = {isOpenItem(articleObject.id)}
-                    toggleOpen = {toggleOpenItem(articleObject.id)}
+                    isOpen = {isOpenItem(articleObject.get('id'))}
+                    toggleOpen = {toggleOpenItem(articleObject.get('id'))}
                 />
             </li>)
         return (

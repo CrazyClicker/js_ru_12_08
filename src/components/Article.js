@@ -22,8 +22,10 @@ class Article extends Component {
     }
 
     render() {
-        const { article: { text, title, comments}, isOpen, toggleOpen } = this.props
-        const body = isOpen ? <section>{text}<CommentList comments = {comments}/></section> : null
+        const { article, isOpen, toggleOpen } = this.props
+        const { text, title, comments, id } = article.toObject()
+        const body = isOpen ? <section>{text}<CommentList articleId = { id } comments = {comments}/></section> : null
+
         return (
             <div>
                 <h3 onClick = {toggleOpen}>{title}</h3>

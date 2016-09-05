@@ -1,13 +1,20 @@
-import { DELETE_ARTICLE } from '../constants'
-import { normalizedArticles } from '../fixtures'
+import {DELETE_ARTICLE, ADD_COMMENT} from '../constants'
+import {normalizedArticles} from '../fixtures'
+import {fromJS} from 'immutable'
 
-export default (articles = normalizedArticles, action) => {
-    const { type, payload, response, error } = action
+export default (articles = fromJS(normalizedArticles), action) => {
+  const {type, payload, response, error} = action
 
-    switch (type) {
-        case DELETE_ARTICLE:
-            return articles.filter(article => article.id != payload.id)
-    }
+  switch (type) {
+    case ADD_COMMENT:
 
-    return articles
+      console.log(payload.comment)
+      const articleKey = articles.findKey(article => article.get('id') == payload.articleId)
+
+      return articles.updateIn([articleKey, 'comments'], comments => comments.push(payload.comment.id))
+    case DELETE_ARTICLE:
+      return articles.filter(article => article.id != payload.id)
+  }
+
+  return articles
 }
