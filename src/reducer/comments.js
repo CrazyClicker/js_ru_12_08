@@ -14,8 +14,8 @@ export default (comments = immutableComments, action) => {
     const { type, payload, response, error } = action
 
     switch (type) {
-        case(ADD_COMMENT):
-            return comments.push(payload.comment)
+        case ADD_COMMENT:
+            return comments.push({...payload.comment, id: action.randomId})
     }
 
     return comments
