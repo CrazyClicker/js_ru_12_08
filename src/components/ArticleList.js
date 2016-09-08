@@ -7,18 +7,21 @@ import './articleList.css'
 class ArticleList extends Component {
     static propTypes = {
         articles: PropTypes.object.isRequired,
+        loading: PropTypes.bool,
         //from accordion decorator
         toggleOpenItem: PropTypes.func.isRequired,
         isOpenItem: PropTypes.func.isRequired
     }
 
     render() {
-        const { articles, toggleOpenItem, isOpenItem } = this.props
+        const { articles, loading, toggleOpenItem, isOpenItem } = this.props
+        if (loading) return <h1>Loading...</h1>
+
         const articleItems = articles.map(articleObject =>
-            <li key = {articleObject.get('id')}>
+            <li key = {articleObject.id}>
                 <Article article = {articleObject}
-                    isOpen = {isOpenItem(articleObject.get('id'))}
-                    toggleOpen = {toggleOpenItem(articleObject.get('id'))}
+                    isOpen = {isOpenItem(articleObject.id)}
+                    toggleOpen = {toggleOpenItem(articleObject.id)}
                 />
             </li>)
         return (
